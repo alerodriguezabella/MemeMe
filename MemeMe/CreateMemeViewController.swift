@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  CreateMemeViewController.swift
 //  MemeMe
 //
 //  Created by Alejandra Rodríguez Abella on 26/8/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var cameraButton: UIBarButtonItem!
@@ -78,6 +78,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         textField.text = text
         textField.textAlignment = .center
         textField.defaultTextAttributes = memeTextAttributes
+        textField.backgroundColor = UIColor.clear
+        textField.layer.borderColor = UIColor.clear.cgColor
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -139,6 +141,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func save() {
         // Create the meme
         let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imageView.image!, memedImage: generateMemedImage())
+        
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            appDelegate.memes.append(meme)
+        }
+        
+        navigationController?.popViewController(animated: true)
+        
     }
     
     func generateMemedImage() -> UIImage {
